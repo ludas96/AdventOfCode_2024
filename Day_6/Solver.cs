@@ -1,4 +1,6 @@
-﻿namespace Day_6;
+﻿using System.Collections.Concurrent;
+
+namespace Day_6;
 
 public class Solver
 {
@@ -57,31 +59,32 @@ public class Solver
     
     private static int GetNumberOfLoopedRoutes(string[,] grid, Dictionary<Point, int> visitedPositions, Point startPos)
     {
-        int numberOfLoopedRoutes = 0;
-        
-        for(int i = 0; i < visitedPositions.Count; i++)
-        { 
+        //int numberOfLoopedRoutes = 0;
+        var concurrentBag = new ConcurrentBag<int>();
+        Parallel.For(0, visitedPositions.Count, (index, state) =>
+        {
+            var gridCopy = (string[,])grid.Clone();
             var currentDir = Direction.Up;
             var currentPos = startPos;
-            var currentIterPos = visitedPositions.ElementAt(i);
-            if (currentIterPos.Key == startPos) continue;
+            var currentIterPos = visitedPositions.ElementAt(index);
+            if (currentIterPos.Key == startPos) return;
             
-            grid[currentIterPos.Key.Y, currentIterPos.Key.X] = "O";
+            gridCopy[currentIterPos.Key.Y, currentIterPos.Key.X] = "O";
             
             var pointsWithDirections = new Dictionary<VisitedPointWithDirections, int>();
             while (true)
             {
                 var newPos = Move(currentPos, currentDir);
-                if (!IsPosInBounds(newPos, grid.GetLength(0), grid.GetLength(1)))
+                if (!IsPosInBounds(newPos, gridCopy.GetLength(0), gridCopy.GetLength(1)))
                     break;
             
-                if (grid[newPos.Y, newPos.X] == "#" || grid[newPos.Y, newPos.X] == "O")
+                if (gridCopy[newPos.Y, newPos.X] == "#" || gridCopy[newPos.Y, newPos.X] == "O")
                 {
                     var newDir = RotateDirection(currentDir);
                     var pointWithDirection = new VisitedPointWithDirections(currentPos, currentDir, newDir);
                     if (!pointsWithDirections.TryAdd(pointWithDirection, 1))
                     {
-                        numberOfLoopedRoutes++;
+                        concurrentBag.Add(1);
                         break;
                     }
 
@@ -92,11 +95,12 @@ public class Solver
                     currentPos = newPos;
                 }
             }
-
-            grid[currentIterPos.Key.Y, currentIterPos.Key.X] = ".";
-        }
+            
+            gridCopy[currentIterPos.Key.Y, currentIterPos.Key.X] = ".";
+        });
        
-        return numberOfLoopedRoutes;
+       return concurrentBag.Sum();
+        //return numberOfLoopedRoutes;
     }
     
     private static string[,] GetGrid(string input)

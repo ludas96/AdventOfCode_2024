@@ -96,7 +96,7 @@ public class Solver
         return grid[pos.Y, pos.X];
     }
 
-    private static List<Node> GetAllPointsInDirectionTowardsB(Node a, Node b, Node[,] grid)
+    private static List<Node> GetAllNodesInDirectionTowardsB(Node a, Node b, Node[,] grid)
     {
         var delta = b.Position - a.Position;
         
@@ -108,10 +108,10 @@ public class Solver
         int y = a.Position.Y;
         var currentNode = a;
         
-        var points = new List<Node>();
+        var nodes = new List<Node>();
         while (true)
         {
-            points.Add(currentNode);
+            nodes.Add(currentNode);
             x += stepX;
             y += stepY;
             if ((x < 0 || x >= grid.GetLength(1)) ||
@@ -120,7 +120,7 @@ public class Solver
             
             currentNode = grid[y, x];
         }
-        return points;
+        return nodes;
     }
 
     private static int GCD(int a, int b)
@@ -208,7 +208,7 @@ public class Solver
                     if (node.Position == node2.Position)
                         continue;
 
-                    var nodes = GetAllPointsInDirectionTowardsB(node, node2, grid);
+                    var nodes = GetAllNodesInDirectionTowardsB(node, node2, grid);
                     foreach (var node3 in nodes)
                     {
                         antiNodes.Add(node3);

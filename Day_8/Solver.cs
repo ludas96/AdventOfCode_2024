@@ -218,6 +218,6 @@ public class Solver
         }
 
      
-        return antiNodes.DistinctBy(x => x.Position).Count();;
+        return antiNodes.DistinctBy(x => x.Position).Count();
     }
 }

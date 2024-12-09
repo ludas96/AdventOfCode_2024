@@ -2,6 +2,7 @@
 
 using Day_9;
 using System.Diagnostics;
+using Common;
 
 var sw = new Stopwatch();
 sw.Start();
@@ -13,12 +14,11 @@ for (int i = 0; i < 2; i++)
     var partOneResult = Solver.Run_PartOne(input);
     sw.Stop();
     if(i > 0)
-        Console.WriteLine($"{partOneResult} in {sw.ElapsedMilliseconds} ms");
+        Console.WriteLine($"{partOneResult} in {StopWatchHelpers.TicksToMs(sw.ElapsedTicks)} ms");
 
     sw.Restart();
     var partTwoResult = Solver.Run_PartTwo(input);
     sw.Stop();
     if(i > 0)
-        Console.WriteLine($"{partTwoResult} in {sw.ElapsedMilliseconds} ms");
+        Console.WriteLine($"{partTwoResult} in {StopWatchHelpers.TicksToMs(sw.ElapsedTicks)} ms");
 }
-

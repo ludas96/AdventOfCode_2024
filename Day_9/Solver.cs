@@ -58,13 +58,18 @@ public class Solver
         }
         
         // Re-index files
+        long sum = 0L;
         for (int i = 0; i < files.Count; i++)
         {
             files[i] = new File(files[i].Id, i, files[i].IsEmpty);
+                       
+            if(files[i].IsEmpty) continue;
+            
+            sum += files[i].Checksum;
         }
 
         // Validate checksum
-        return files.Sum(file => file.IsEmpty ? 0L : file.Checksum);
+        return sum;
     }
     
     public static long Run_PartTwo(string input)

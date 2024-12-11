@@ -9,7 +9,7 @@ sw.Start();
 sw.Stop();
 var input = System.IO.File.ReadAllText("input.txt");
 
-for (int i = 0; i < 2; i++)
+for (int i = 0; i < 10; i++)
 {
     sw.Restart();
     var partOneResult = Solver.Run_PartOne(input);

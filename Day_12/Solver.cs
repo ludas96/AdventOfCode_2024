@@ -148,7 +148,7 @@ public static class Solver
         public Coordinate Coordinate { get; init; }
         
         public int NumEdges { get; set; }
-        public List<Direction> Edges { get; set; } = [Direction.Down, Direction.Left, Direction.Right, Direction.Up];
+        public List<Direction> Edges { get; init; } = [];
     }
 
     private class Region(char type, int id)

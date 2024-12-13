@@ -14,18 +14,18 @@ public static class Solver
             
             var aPrice = (machine.Price.X * machine.B.Y) - (machine.Price.Y * machine.B.X);
             
-            var costA = (aPrice / a);
+            var numA = (aPrice / a);
 
-            var bPrice = (machine.Price.X - (machine.A.X * costA));
-            var costB = bPrice / machine.B.X;
+            var bPrice = (machine.Price.X - (machine.A.X * numA));
+            var numB = bPrice / machine.B.X;
 
-            if (isLimited && (costA > 100 || costB > 100))
+            if (isLimited && (numA > 100 || numB > 100))
                 continue;
             
-            if (((machine.A.X * costA) + (machine.B.X * costB)) != machine.Price.X || ((machine.A.Y * costA) + (machine.B.Y * costB)) != machine.Price.Y)
+            if (((machine.A.X * numA) + (machine.B.X * numB)) != machine.Price.X || ((machine.A.Y * numA) + (machine.B.Y * numB)) != machine.Price.Y)
                 continue;
             
-            cost += ((costA * machine.TokensA) + (costB * machine.TokensB));
+            cost += ((numA * machine.TokensA) + (numB * machine.TokensB));
         }
 
         return cost;
